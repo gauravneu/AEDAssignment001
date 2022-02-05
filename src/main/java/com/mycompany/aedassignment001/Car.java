@@ -23,7 +23,7 @@ public class Car {
     private String ownerSocialSecurityNumber;
     private String ownerAddress;
     private int warrantyYear;
-    private String serviceRecords ;
+    private String serviceRecords []= new String[3] ;
     private String Photo;
 
     public String getBrand() {
@@ -130,20 +130,20 @@ public class Car {
         this.ownerAddress = ownerAddress;
     }
 
-    public String getServiceRecords() {
-        return serviceRecords;
-    }
-
-    public void setServiceRecords(String serviceRecords) {
-        this.serviceRecords = serviceRecords;
-    }
-
     public int getWarrantyYear() {
         return warrantyYear;
     }
 
     public void setWarrantyYear(int warrantyYear) {
         this.warrantyYear = warrantyYear;
+    }
+
+    public String[] getServiceRecords() {
+        return serviceRecords;
+    }
+
+    public void setServiceRecords(String[] serviceRecords) {
+        this.serviceRecords = serviceRecords;
     }
 
     public String getPhoto() {
@@ -154,8 +154,5 @@ public class Car {
         this.Photo = Photo;
     }
     
-
-
-
 }
 

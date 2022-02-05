@@ -5,6 +5,8 @@
 package userinterface;
 
 import com.mycompany.aedassignment001.Car;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,12 +17,10 @@ public class CarjFrame extends javax.swing.JFrame {
     /**
      * Creates new form CarjFrame
      */
-    Car car;
-    
-    
+    private Car car;
+    private CreateJpanel createPanel;
     public CarjFrame() {
         initComponents();
-        car = new Car();
     }
 
     /**
@@ -80,7 +80,7 @@ public class CarjFrame extends javax.swing.JFrame {
         RightjPanel.setLayout(RightjPanelLayout);
         RightjPanelLayout.setHorizontalGroup(
             RightjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
         RightjPanelLayout.setVerticalGroup(
             RightjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,8 +94,8 @@ public class CarjFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(MainjFrame, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(MainjFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 949, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 172, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,15 +110,24 @@ public class CarjFrame extends javax.swing.JFrame {
 
     private void carCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carCreateButtonActionPerformed
         // TODO add your handling code here:
-        
-        CreateJpanel createPanel = new CreateJpanel(car);
+        if(createPanel == null)
+            this.createPanel = new CreateJpanel();
+       
         MainjFrame.setRightComponent(createPanel);
+        
+        
+        
     }//GEN-LAST:event_carCreateButtonActionPerformed
 
     private void carViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carViewButtonActionPerformed
         // TODO add your handling code here:
-        ViewPanel viewPanel = new ViewPanel(car);
+        List<Car> cars = new ArrayList<>();
+        if(createPanel != null){
+            cars.addAll(this.createPanel.getAllCars());
+        }
+        ViewPanel viewPanel = new ViewPanel(cars);
         MainjFrame.setRightComponent(viewPanel);
+       
     }//GEN-LAST:event_carViewButtonActionPerformed
 
     /**

@@ -6,20 +6,38 @@ package userinterface;
 
 import com.mycompany.aedassignment001.Car;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author gaurav
  */
 public class ViewPanel extends javax.swing.JPanel {
-
+    private final List<Car> cars;
     /**
      * Creates new form viewPanel
      */
+        CreateJpanel createPanel; 
         Car car;
     
-    public ViewPanel(Car car) {
+    public ViewPanel(List<Car> cars) {
+        this.cars = new ArrayList<>(cars);
+        createPanel= new CreateJpanel();
         initComponents();
-        this.car =car;
+       
     }
 
    
@@ -49,7 +67,6 @@ public class ViewPanel extends javax.swing.JPanel {
         lblOwnerDriverLicense = new javax.swing.JLabel();
         lblOwnerSocialSecurityNumber = new javax.swing.JLabel();
         lblOwnerAddress = new javax.swing.JLabel();
-        lblServiceRecords = new javax.swing.JLabel();
         lblWarrantyYear = new javax.swing.JLabel();
         lblPhoto = new javax.swing.JLabel();
         txtBrand = new javax.swing.JTextField();
@@ -62,16 +79,15 @@ public class ViewPanel extends javax.swing.JPanel {
         txtOwnerDriverLicense = new javax.swing.JTextField();
         txtOwnerSocialSecurityNumber = new javax.swing.JTextField();
         txtOwnerAddress = new javax.swing.JTextField();
-        txtServiceRecords = new javax.swing.JTextField();
-        txtPhoto = new javax.swing.JTextField();
         txtWarrantyYear = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
         txtColor = new javax.swing.JTextField();
         btnView = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        serRecTable = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lblTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        carPhoto = new javax.swing.JLabel();
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -106,8 +122,6 @@ public class ViewPanel extends javax.swing.JPanel {
 
         lblOwnerAddress.setText("Owner Address :");
 
-        lblServiceRecords.setText("Service Records :");
-
         lblWarrantyYear.setText("Warranty Year :");
 
         lblPhoto.setText("Photo :");
@@ -119,38 +133,45 @@ public class ViewPanel extends javax.swing.JPanel {
             }
         });
 
-        btnClear.setText("Clear");
-
-        serRecTable.setModel(new javax.swing.table.DefaultTableModel(
+        lblTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null}
+
             },
             new String [] {
-                "ServiceRecord1", "ServiceRecord2", "ServiceRecord3"
+                "Service Record 1", "Service Record 2", "Service Record 3"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(serRecTable);
+        jScrollPane2.setViewportView(lblTable);
+
+        jLabel1.setText("Service Records:");
+
+        carPhoto.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(viewCarLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(53, 53, 53)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(viewCarLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(53, 53, 53)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(155, 155, 155))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(lblEngineNo)
@@ -189,20 +210,6 @@ public class ViewPanel extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txtOwnerDriverLicense, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(lblPhoto)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblWarrantyYear)
-                                            .addComponent(lblOwnerAddress)
-                                            .addComponent(lblServiceRecords))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtWarrantyYear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtOwnerAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtServiceRecords, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblOwnerName)
                                             .addComponent(lblOwnerTelephoneNumbers)
@@ -211,20 +218,30 @@ public class ViewPanel extends javax.swing.JPanel {
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtOwnerName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtOwnerTelephoneNumbers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtOwnerEmailAddresses, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(16, 16, 16))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(197, 197, 197)
-                                .addComponent(btnView)
-                                .addGap(68, 68, 68)
-                                .addComponent(btnClear))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 267, Short.MAX_VALUE)))
+                                            .addComponent(txtOwnerEmailAddresses, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(lblWarrantyYear)
+                                                    .addComponent(lblOwnerAddress))
+                                                .addGap(481, 481, 481))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                .addComponent(lblPhoto)
+                                                .addGap(540, 540, 540)))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addComponent(carPhoto))
+                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtWarrantyYear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtOwnerAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(16, 16, 16)))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnView)
+                .addGap(331, 331, 331))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,9 +253,7 @@ public class ViewPanel extends javax.swing.JPanel {
                     .addComponent(lblEngineNo)
                     .addComponent(txtEngineNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnView)
-                    .addComponent(btnClear))
+                .addComponent(btnView)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBrand)
@@ -287,21 +302,19 @@ public class ViewPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblOwnerAddress)
                     .addComponent(txtOwnerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblServiceRecords)
-                    .addComponent(txtServiceRecords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblWarrantyYear)
                     .addComponent(txtWarrantyYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPhoto)
-                    .addComponent(txtPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(365, 365, 365))
+                    .addComponent(carPhoto))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(559, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel2);
@@ -311,28 +324,73 @@ public class ViewPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 831, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 831, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 937, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
         // TODO add your handling code here:
+        
+                for (Car car1 : cars) {
+                   
+            if (String.valueOf(car1.getEngineNo()).equals(txtEngineNo.getText())){
+                txtBrand.setText(car1.getBrand());
+                txtColor.setText(car1.getColor());
+                txtEngineNo.setText(String.valueOf(car1.getEngineNo()));
+                txtLicensePlates.setText(String.valueOf(car1.getLicensePlates()));
+                txtModel.setText(car1.getModel());
+                txtOwnerAddress.setText(car1.getOwnerAddress());
+                txtOwnerName.setText(car1.getOwnerName());
+                txtOwnerDriverLicense.setText(car1.getOwnerDriverlicense());
+                txtOwnerEmailAddresses.setText(car1.getOwnerEmailAddresses());
+                txtOwnerEmailAddresses.setText(car1.getOwnerEmailAddresses());
+                txtOwnerSocialSecurityNumber.setText(car1.getOwnerSocialSecurityNumber());
+                txtOwnerTelephoneNumbers.setText(String.valueOf(car1.getOwnerTelephoneNumbers()));
+                BufferedImage image;
+                try {
+                    image = ImageIO.read(new File("./"+car1.getPhoto()));
+                    ImageIcon ic = new ImageIcon(image.getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+                    
+                    carPhoto.setIcon(ic);
+                   
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Not a valid image to show!!");
+                }
+                
+                
+                txtSeatsNumber.setText(car1.getSeatsNumber());
+                txtWarrantyYear.setText(String.valueOf(car1.getWarrantyYear()));
+                txtYear.setText(String.valueOf(car1.getYear()));
+                
+                DefaultTableModel model = (DefaultTableModel) lblTable.getModel();
+            model.addRow(new Object[]{car1.getServiceRecords()[0], car1.getServiceRecords()[1], car1.getServiceRecords()[2]});
+                JOptionPane.showMessageDialog(this, "Car Found!!");
+                return;
+            }
+              
+           
+        }
+              JOptionPane.showMessageDialog(this, "This Car does not Exist!!");
+
+
+         //       car1.setServiceRecords(new String[]{txtSerRec1.getText(),txtSerRec2.getText(),txtSerRec3.getText()});
+                
     }//GEN-LAST:event_btnViewActionPerformed
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnView;
+    private javax.swing.JLabel carPhoto;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBrand;
     private javax.swing.JLabel lblColor;
     private javax.swing.JLabel lblEngineNo;
@@ -346,10 +404,9 @@ public class ViewPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblOwnerTelephoneNumbers;
     private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblSeatsNumber;
-    private javax.swing.JLabel lblServiceRecords;
+    private javax.swing.JTable lblTable;
     private javax.swing.JLabel lblWarrantyYear;
     private javax.swing.JLabel lblYear;
-    private javax.swing.JTable serRecTable;
     private javax.swing.JTextField txtBrand;
     private javax.swing.JTextField txtColor;
     private javax.swing.JTextField txtEngineNo;
@@ -361,11 +418,14 @@ public class ViewPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtOwnerName;
     private javax.swing.JTextField txtOwnerSocialSecurityNumber;
     private javax.swing.JTextField txtOwnerTelephoneNumbers;
-    private javax.swing.JTextField txtPhoto;
     private javax.swing.JTextField txtSeatsNumber;
-    private javax.swing.JTextField txtServiceRecords;
     private javax.swing.JTextField txtWarrantyYear;
     private javax.swing.JTextField txtYear;
     private javax.swing.JLabel viewCarLabel;
     // End of variables declaration//GEN-END:variables
+   
+    void setCars(List<Car> cars) {
+        this.cars.clear();
+        this.cars.addAll(cars);
+    }
 }
