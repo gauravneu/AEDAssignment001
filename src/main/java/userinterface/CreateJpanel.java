@@ -413,7 +413,14 @@ public class CreateJpanel extends javax.swing.JPanel {
                     return;
                 }
                 
-                car1.setPhoto(txtPhoto.getText());
+                
+                if (txtPhoto.getText().length() >0 ) {
+                    car1.setPhoto(txtPhoto.getText());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Photo is Required!!");
+                    return;
+                }
+                
                 car1.setSeatsNumber(txtSeatsNumber.getText());
                 
                 
